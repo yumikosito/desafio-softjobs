@@ -1,9 +1,17 @@
 const { pool } = require('../config/db')
+const jwt=require('jsonwebtoken');
 
-exports.obtenerUsuario = async() => {
+exports.obtenerUsuario = async(req) => {
   try {
-    const result = await pool.query('SELECT * FROM usuarios');
+    const Authorization = req.header("Authorization")
+    const token = Authorization.split("Bearer ")[1]
+    const {email} = jwt.decode(token)
+
+    const SQLQuery = 'SELECT * FROM usuarios WHERE email=$1';
+    const SQLValues = [email]
+    const result = await pool.query(SQLQuery,SQLValues)
     return result.rows;
+
   } catch (error) {
     throw new Error('Error al obtener el usuario');
   }

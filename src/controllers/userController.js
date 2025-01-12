@@ -7,7 +7,7 @@ require('dotenv').config();
 
 exports.obtenerUsuarios = async(req,res) => {
   try {
-    const usuario = await obtenerUsuario();
+    const usuario = await obtenerUsuario(req);
     res.status(200).send(usuario)
   } catch (error) {
     res.status(500).send('No se pudo obtener datos')
@@ -46,7 +46,7 @@ exports.autenticarUsuarios = async(req,res) =>{
           },
           process.env.TOKEN_PWD
         )
-        res.status(200).json(token)
+        res.status(200).json({'token':token})
       }
     }
   } catch (error) {
